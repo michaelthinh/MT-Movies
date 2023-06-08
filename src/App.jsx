@@ -1,13 +1,8 @@
-import MTLogo from "./assets/img/logo/mt-logo.png";
-
 import "./App.css";
+import Header from "./components/Header";
 
 function App() {
-    return (
-        <div className="flex flex-col items-center mt-96">
-            <img src={MTLogo} alt="MT Movies Logo" />
-        </div>
-    );
+    return <Header />;
 }
 
 export default App;
