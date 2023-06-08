@@ -1,11 +1,21 @@
 import MTLogo from "../../assets/img/logo/mt-logo.png";
+
 import { MdSearch } from "react-icons/md";
+import { useScrollY } from "../../hooks";
 
 import classes from "./Header.module.scss";
 
-const Header = (props) => {
+const Header = () => {
+    const [scrollY] = useScrollY();
     return (
-        <div className={classes.header}>
+        <div
+            className={classes.header}
+            style={
+                scrollY < 600
+                    ? { backgroundColor: "transparent" }
+                    : { backgroundColor: "var(--color-background)" }
+            }
+        >
             <div className={classes.headerContainer}>
                 <div className={classes.logo}>
                     <img src={MTLogo} alt="MT-Logo" />

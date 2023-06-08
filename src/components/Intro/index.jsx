@@ -20,14 +20,14 @@ const Intro = (props) => {
                 volume={1}
                 muted={isMuted}
                 controls={false}
-                url="https://www.youtube.com/watch?v=UhVjp48U2Oc"
+                url="https://www.youtube.com/watch?v=iZs68cUOnDc"
             />
             <div className={classes.introInfo}>
                 <h1 className={classes.introHeading}>MT MOVIES</h1>
                 <p className={classes.introDescription}>
                     MT Movies inspires you through title details, trailers,
                     upcoming movies and high-resolution covers makes the
-                    experience almost real
+                    experience almost realistic.
                 </p>
             </div>
             {isMuted ? (
