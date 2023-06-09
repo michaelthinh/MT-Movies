@@ -1,37 +1,52 @@
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import MoviesRow from "./MoviesRow";
 
-const movies = [
-    "https://assets-prd.ignimgs.com/2021/09/21/en-us-arcane-character-jinx-vertical-4x5-rgb-1632264982243.jpg",
-    "https://m.media-amazon.com/images/M/MV5BZGRlNTY3NGYtM2YzZS00N2YyLTg0ZDYtNmY2ZDg2NDM3N2JlXkEyXkFqcGdeQXVyNTI4MzE4MDU@._V1_FMjpg_UX1000_.jpg",
-    "https://assets-prd.ignimgs.com/2021/09/21/en-us-arcane-character-jinx-vertical-4x5-rgb-1632264982243.jpg",
-    "https://m.media-amazon.com/images/M/MV5BZGRlNTY3NGYtM2YzZS00N2YyLTg0ZDYtNmY2ZDg2NDM3N2JlXkEyXkFqcGdeQXVyNTI4MzE4MDU@._V1_FMjpg_UX1000_.jpg",
-    "https://assets-prd.ignimgs.com/2021/09/21/en-us-arcane-character-jinx-vertical-4x5-rgb-1632264982243.jpg",
-    "https://assets-prd.ignimgs.com/2021/09/21/en-us-arcane-character-jinx-vertical-4x5-rgb-1632264982243.jpg",
-    "https://assets-prd.ignimgs.com/2021/09/21/en-us-arcane-character-jinx-vertical-4x5-rgb-1632264982243.jpg",
-    "https://assets-prd.ignimgs.com/2021/09/21/en-us-arcane-character-jinx-vertical-4x5-rgb-1632264982243.jpg",
-    "https://assets-prd.ignimgs.com/2021/09/21/en-us-arcane-character-jinx-vertical-4x5-rgb-1632264982243.jpg",
-    "https://assets-prd.ignimgs.com/2021/09/21/en-us-arcane-character-jinx-vertical-4x5-rgb-1632264982243.jpg",
-    "https://assets-prd.ignimgs.com/2021/09/21/en-us-arcane-character-jinx-vertical-4x5-rgb-1632264982243.jpg",
-    "https://assets-prd.ignimgs.com/2021/09/21/en-us-arcane-character-jinx-vertical-4x5-rgb-1632264982243.jpg",
-    "https://assets-prd.ignimgs.com/2021/09/21/en-us-arcane-character-jinx-vertical-4x5-rgb-1632264982243.jpg",
-    "https://assets-prd.ignimgs.com/2021/09/21/en-us-arcane-character-jinx-vertical-4x5-rgb-1632264982243.jpg",
-];
+import {
+    getOriginalMovies,
+    getTrendingMovies,
+    getTopRatedMovies,
+    getActionMovies,
+    getComedyMovies,
+    getHorrorMovies,
+    getRomanceMovies,
+    getDocumentary,
+} from "../../store/movies/moviesActions";
 
 const Contents = () => {
+    const dispatch = useDispatch();
+    const originalMovies = useSelector((state) => state.movies.originalMovies);
+    const trendingMovies = useSelector((state) => state.movies.trendingMovies);
+    const topRatedMovies = useSelector((state) => state.movies.topRatedMovies);
+    const actionMovies = useSelector((state) => state.movies.actionMovies);
+    const comedyMovies = useSelector((state) => state.movies.comedyMovies);
+    const horrorMovies = useSelector((state) => state.movies.horrorMovies);
+    const romanceMovies = useSelector((state) => state.movies.romanceMovies);
+    const documentary = useSelector((state) => state.movies.documentary);
+    useEffect(() => {
+        dispatch(getOriginalMovies());
+        dispatch(getTrendingMovies());
+        dispatch(getTopRatedMovies());
+        dispatch(getActionMovies());
+        dispatch(getComedyMovies());
+        dispatch(getHorrorMovies());
+        dispatch(getRomanceMovies());
+        dispatch(getDocumentary());
+    }, [dispatch]);
     return (
         <div>
             <MoviesRow
-                movies={movies}
+                movies={originalMovies}
                 title="Original Movies"
                 isOriginalMovies={true}
             />
-            <MoviesRow movies={movies} title="Trending Movies" />
-            <MoviesRow movies={movies} title="Top Rated Movies" />
-            <MoviesRow movies={movies} title="Action Movies" />
-            <MoviesRow movies={movies} title="Comedy Movies" />
-            <MoviesRow movies={movies} title="Horror Movies" />
-            <MoviesRow movies={movies} title="Romance Movies" />
-            <MoviesRow movies={movies} title="Documentary" />
+            <MoviesRow movies={trendingMovies} title="Trending Movies" />
+            <MoviesRow movies={topRatedMovies} title="Top Rated Movies" />
+            <MoviesRow movies={actionMovies} title="Action Movies" />
+            <MoviesRow movies={comedyMovies} title="Comedy Movies" />
+            <MoviesRow movies={horrorMovies} title="Horror Movies" />
+            <MoviesRow movies={romanceMovies} title="Romance Movies" />
+            <MoviesRow movies={documentary} title="Documentary" />
         </div>
     );
 };

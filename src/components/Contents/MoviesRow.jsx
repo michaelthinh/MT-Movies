@@ -3,7 +3,11 @@ import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { useEffect, useRef, useState } from "react";
 
 import classes from "./MoviesRow.module.scss";
-import { SmoothHorizontalScrolling } from "../../utils";
+import {
+    SmoothHorizontalScrolling,
+    getBackdropImage,
+    getPosterImage,
+} from "../../utils";
 import { useViewPort } from "../../hooks";
 
 const MoviesRow = (props) => {
@@ -87,17 +91,33 @@ const MoviesRow = (props) => {
                         : {}
                 }
             >
-                {movies.map((movie, index) => (
-                    <div
-                        key={index}
-                        className={classes.movieItem}
-                        ref={movieRef}
-                        draggable="false"
-                    >
-                        <img src={movie} alt="Movie poster" draggable="false" />
-                        <div className={classes.movieName}>Movie Name</div>
-                    </div>
-                ))}
+                {movies &&
+                    movies.length > 0 &&
+                    movies.map((movie, index) => {
+                        if (movie.poster_path && movie.backdrop_path !== null) {
+                            console.log(isOriginalMovies);
+                            let imageURL = isOriginalMovies
+                                ? getPosterImage(movie.poster_path)
+                                : getBackdropImage(movie.backdrop_path);
+                            return (
+                                <div
+                                    key={index}
+                                    className={classes.movieItem}
+                                    ref={movieRef}
+                                    draggable="false"
+                                >
+                                    <img
+                                        src={imageURL}
+                                        alt="Movie poster"
+                                        draggable="false"
+                                    />
+                                    <div className={classes.movieName}>
+                                        {movie.title || movie.name}
+                                    </div>
+                                </div>
+                            );
+                        }
+                    })}
             </div>
             <div>
                 <div
