@@ -1,26 +1,26 @@
-import { useSelector } from "react-redux";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import "./App.css";
-import Contents from "./components/Contents";
-import Header from "./components/Header";
-import Intro from "./components/Intro";
-import Menu from "./components/Menu";
-import MovieDetail from "./components/MovieDetail";
+
+import Root from "./pages/Root";
+import Home from "./pages/Home";
+import Search from "./pages/Search";
+import Error from "./pages/Error";
+
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <Root />,
+        errorElement: <Error />,
+        children: [
+            { index: true, element: <Home /> },
+            { path: "search/:searchInput", element: <Search /> },
+        ],
+    },
+]);
 
 function App() {
-    const movieDetail = useSelector((state) => state.movies.movieDetail);
-    return (
-        <>
-            <Header />
-            <Intro />
-            <Contents />
-            <Menu />
-            <MovieDetail
-                movie={movieDetail}
-                showModal={movieDetail ? true : false}
-            />
-        </>
-    );
+    return <RouterProvider router={router} />;
 }
 
 export default App;
