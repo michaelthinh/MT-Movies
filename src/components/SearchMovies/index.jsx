@@ -1,24 +1,32 @@
+import { useEffect } from "react";
 import { useViewPort } from "../../hooks";
 import classes from "./SearchMovies.module.scss";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
+import {
+    getSearchMovies,
+    getMovieDetail,
+} from "../../store/movies/moviesActions";
+import { getBackdropImage } from "../../utils";
 
-const moviesList = [
-    "https://m.media-amazon.com/images/M/MV5BMWYxNGJhNmQtZmI4OS00NjQ1LThmNzAtY2JkYmQ5NjliNDgwXkEyXkFqcGdeQXVyODc0OTEyNDU@._V1_.jpg",
-    "https://m.media-amazon.com/images/M/MV5BMWYxNGJhNmQtZmI4OS00NjQ1LThmNzAtY2JkYmQ5NjliNDgwXkEyXkFqcGdeQXVyODc0OTEyNDU@._V1_.jpg",
-    "https://m.media-amazon.com/images/M/MV5BMWYxNGJhNmQtZmI4OS00NjQ1LThmNzAtY2JkYmQ5NjliNDgwXkEyXkFqcGdeQXVyODc0OTEyNDU@._V1_.jpg",
-    "https://m.media-amazon.com/images/M/MV5BMWYxNGJhNmQtZmI4OS00NjQ1LThmNzAtY2JkYmQ5NjliNDgwXkEyXkFqcGdeQXVyODc0OTEyNDU@._V1_.jpg",
-    "https://m.media-amazon.com/images/M/MV5BMWYxNGJhNmQtZmI4OS00NjQ1LThmNzAtY2JkYmQ5NjliNDgwXkEyXkFqcGdeQXVyODc0OTEyNDU@._V1_.jpg",
-    "https://m.media-amazon.com/images/M/MV5BMWYxNGJhNmQtZmI4OS00NjQ1LThmNzAtY2JkYmQ5NjliNDgwXkEyXkFqcGdeQXVyODc0OTEyNDU@._V1_.jpg",
-    "https://m.media-amazon.com/images/M/MV5BMWYxNGJhNmQtZmI4OS00NjQ1LThmNzAtY2JkYmQ5NjliNDgwXkEyXkFqcGdeQXVyODc0OTEyNDU@._V1_.jpg",
-    "https://m.media-amazon.com/images/M/MV5BMWYxNGJhNmQtZmI4OS00NjQ1LThmNzAtY2JkYmQ5NjliNDgwXkEyXkFqcGdeQXVyODc0OTEyNDU@._V1_.jpg",
-    "https://m.media-amazon.com/images/M/MV5BMWYxNGJhNmQtZmI4OS00NjQ1LThmNzAtY2JkYmQ5NjliNDgwXkEyXkFqcGdeQXVyODc0OTEyNDU@._V1_.jpg",
-    "https://m.media-amazon.com/images/M/MV5BMWYxNGJhNmQtZmI4OS00NjQ1LThmNzAtY2JkYmQ5NjliNDgwXkEyXkFqcGdeQXVyODc0OTEyNDU@._V1_.jpg",
-];
+const useQuery = () => new URLSearchParams(useLocation().search);
 
 const SearchMovies = () => {
     const [windowWidth] = useViewPort();
+    const dispatch = useDispatch();
+    const searchMovies = useSelector((state) => state.movies.searchMovies);
+    const keywords = useQuery().get("keywords");
+    useEffect(() => {
+        if (keywords) {
+            dispatch(getSearchMovies(keywords));
+        }
+    }, [keywords, dispatch]);
+    const handleGetMovieDetail = (movie) => {
+        dispatch(getMovieDetail(movie));
+    };
     return (
         <div className={classes.searchContainer}>
-            {moviesList && moviesList.length > 0 ? (
+            {searchMovies && searchMovies.length > 0 ? (
                 <div
                     className={classes.searchContent}
                     style={{
@@ -35,12 +43,30 @@ const SearchMovies = () => {
                         },auto)`,
                     }}
                 >
-                    {moviesList.map((movie, index) => (
-                        <div className={classes.movieItem} key={index}>
-                            <img src={movie} alt="" />
-                            <span>Movie name</span>
-                        </div>
-                    ))}
+                    {searchMovies.map((movie, index) => {
+                        if (
+                            movie.backdrop_path !== null &&
+                            movie.media_type !== "person"
+                        ) {
+                            return (
+                                <div
+                                    className={classes.movieItem}
+                                    key={index}
+                                    onClick={() => {
+                                        handleGetMovieDetail(movie);
+                                    }}
+                                >
+                                    <img
+                                        src={getBackdropImage(
+                                            movie.backdrop_path
+                                        )}
+                                        alt={movie.name || movie.title}
+                                    />
+                                    <span>{movie.name || movie.title}</span>
+                                </div>
+                            );
+                        }
+                    })}
                 </div>
             ) : (
                 <div className={classes.notFound}>

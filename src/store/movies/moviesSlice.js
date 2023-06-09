@@ -13,6 +13,7 @@ const moviesSlice = createSlice({
         documentary: null,
         movieDetail: null,
         loading: true,
+        searchMovies: null,
     },
     reducers: {
         setLoading(state, action) {
@@ -44,6 +45,9 @@ const moviesSlice = createSlice({
         },
         setMovieDetail(state, action) {
             state.movieDetail = action.payload.movie;
+        },
+        setSearchMovies(state, action) {
+            state.searchMovies = action.payload.movies;
         },
     },
 });

@@ -209,3 +209,27 @@ export const getMovieDetail = (movie) => {
         dispatch(moviesActions.setMovieDetail({ movie: movie }));
     };
 };
+
+export const getSearchMovies = (keywords) => {
+    return async (dispatch) => {
+        const fetchData = async () => {
+            const response = await axios.get(
+                `${BASE_URL}/search/multi?api_key=${API_KEY}&language=en-US&include_adult=false&query=${keywords}`
+            );
+
+            const movies = await response.data.results;
+            return movies;
+        };
+        try {
+            const moviesFound = await fetchData();
+
+            dispatch(
+                moviesActions.setSearchMovies({
+                    movies: moviesFound,
+                })
+            );
+        } catch (error) {
+            console.log(error);
+        }
+    };
+};
