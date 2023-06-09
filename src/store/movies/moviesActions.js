@@ -203,3 +203,9 @@ export const getDocumentary = () => {
         }
     };
 };
+
+export const getMovieDetail = (movie) => {
+    return (dispatch) => {
+        dispatch(moviesActions.setMovieDetail({ movie: movie }));
+    };
+};

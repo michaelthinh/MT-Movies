@@ -1,3 +1,5 @@
+import { useSelector } from "react-redux";
+
 import "./App.css";
 import Contents from "./components/Contents";
 import Header from "./components/Header";
@@ -6,13 +8,17 @@ import Menu from "./components/Menu";
 import MovieDetail from "./components/MovieDetail";
 
 function App() {
+    const movieDetail = useSelector((state) => state.movies.movieDetail);
     return (
         <>
             <Header />
             <Intro />
             <Contents />
             <Menu />
-            <MovieDetail />
+            <MovieDetail
+                movie={movieDetail}
+                showModal={movieDetail ? true : false}
+            />
         </>
     );
 }

@@ -9,6 +9,8 @@ import {
     getPosterImage,
 } from "../../utils";
 import { useViewPort } from "../../hooks";
+import { useDispatch } from "react-redux";
+import { getMovieDetail } from "../../store/movies/moviesActions";
 
 const MoviesRow = (props) => {
     const { movies, title, isOriginalMovies, idSection } = props;
@@ -65,6 +67,10 @@ const MoviesRow = (props) => {
     const dragEnterHandler = (e) => {
         setDragMove(e.screenX);
     };
+    const dispatch = useDispatch();
+    const handleGetMovieDetail = (movie) => {
+        dispatch(getMovieDetail(movie));
+    };
     return (
         <div
             className={classes.moviesContainer}
@@ -108,6 +114,9 @@ const MoviesRow = (props) => {
                                     className={classes.movieItem}
                                     ref={movieRef}
                                     draggable="false"
+                                    onClick={() => {
+                                        handleGetMovieDetail(movie);
+                                    }}
                                 >
                                     <img
                                         src={imageURL}

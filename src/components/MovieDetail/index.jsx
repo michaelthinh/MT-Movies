@@ -1,11 +1,18 @@
+import { getMovieDetail } from "../../store/movies/moviesActions";
 import classes from "./MovieDetail.module.scss";
+import { useDispatch } from "react-redux";
+import moment from "moment";
 
-const showModal = false;
-
-const MovieDetail = () => {
+const MovieDetail = (props) => {
+    const { movie, showModal } = props;
+    const dispatch = useDispatch();
+    const closeModalHandler = () => {
+        dispatch(getMovieDetail(null));
+    };
     return (
         <div className={classes.movieDetailModal}>
             <div
+                onClick={closeModalHandler}
                 className={`${classes.backdrop} ${
                     showModal ? classes.showBackdrop : classes.hideBackdrop
                 }`}
@@ -14,31 +21,44 @@ const MovieDetail = () => {
                 className={`${classes.modal} ${
                     showModal ? classes.showModal : classes.hideModal
                 }`}
-                style={{
-                    backgroundImage: `url(https://i.ytimg.com/vi/ndl1W4ltcmg/maxresdefault.jpg)`,
-                    backgroundSize: "cover",
-                }}
+                style={
+                    movie && {
+                        backgroundImage: `url(https://image.tmdb.org/t/p/original/${
+                            movie.backdrop_path || movie.poster_path
+                        })`,
+                        backgroundSize: "cover",
+                    }
+                }
             >
                 <div className={classes.container}>
                     <div className={classes.movieInfo}>
-                        <h1 className={classes.movieTitle}>The witcher</h1>
+                        <h1 className={classes.movieTitle}>
+                            {movie && (movie.title || movie.name)}
+                        </h1>
                         <p className={classes.movieStats}>
                             <span className={classes.movieRating}>
-                                Rating: 82%
+                                Rating: {movie && movie.vote_average} ⭐
                             </span>
                             <span className={classes.moviePopularity}>
-                                Popularity: 12567.123
+                                Popularity: {movie && movie.popularity}
                             </span>
                         </p>
-                        <p className={classes.movieReleaseData}>
-                            Release Date: 21/12/2022
+                        <p className={classes.movieVoteCount}>
+                            Vote count: {movie && movie.vote_count}
                         </p>
-                        <p className={classes.movieRuntime}>Runtime: 2h09s</p>
+                        <p className={classes.movieReleaseDate}>
+                            Release date:{" "}
+                            {movie &&
+                                (moment(movie.release_date).format(
+                                    "DD/MM/YYYY"
+                                ) ||
+                                    moment(movie.first_air_date).format(
+                                        "DD/MM/YYYY"
+                                    ))}
+                        </p>
+
                         <p className={classes.movieOverview}>
-                            Geralt of rivia aslkdjasldkjasdlkajd Lorem ipsum
-                            dolor sit, amet consectetur adipisicing elit.
-                            Officiis, nisi ratione? Beatae neque dolorem commodi
-                            tempore quos iure explicabo itaque.
+                            {movie && movie.overview}
                         </p>
                     </div>
                 </div>

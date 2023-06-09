@@ -11,6 +11,7 @@ const moviesSlice = createSlice({
         horrorMovies: null,
         romanceMovies: null,
         documentary: null,
+        movieDetail: null,
         loading: true,
     },
     reducers: {
@@ -40,6 +41,9 @@ const moviesSlice = createSlice({
         },
         setDocumentary(state, action) {
             state.documentary = action.payload.movies;
+        },
+        setMovieDetail(state, action) {
+            state.movieDetail = action.payload.movie;
         },
     },
 });
