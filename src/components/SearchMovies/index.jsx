@@ -70,7 +70,7 @@ const SearchMovies = () => {
                 </div>
             ) : (
                 <div className={classes.notFound}>
-                    Your search for "keyword" did not have any matches
+                    Your search did not have any matches
                 </div>
             )}
         </div>
