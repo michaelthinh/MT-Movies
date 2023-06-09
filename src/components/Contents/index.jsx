@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import MoviesRow from "./MoviesRow";
 
+import { FaArrowAltCircleUp } from "react-icons/fa";
+import MoviesRow from "./MoviesRow";
 import {
     getOriginalMovies,
     getTrendingMovies,
@@ -13,7 +14,11 @@ import {
     getDocumentary,
 } from "../../store/movies/moviesActions";
 
+import { animateScroll as scroll } from "react-scroll";
+import { useScrollY } from "../../hooks";
+
 const Contents = () => {
+    const [scrollY] = useScrollY();
     const dispatch = useDispatch();
     const originalMovies = useSelector((state) => state.movies.originalMovies);
     const trendingMovies = useSelector((state) => state.movies.trendingMovies);
@@ -33,20 +38,63 @@ const Contents = () => {
         dispatch(getRomanceMovies());
         dispatch(getDocumentary());
     }, [dispatch]);
+    const scrollToTopHandler = () => {
+        console.log(scrollY);
+        scroll.scrollToTop();
+    };
+
     return (
         <div>
             <MoviesRow
                 movies={originalMovies}
                 title="Original Movies"
                 isOriginalMovies={true}
+                idSection="original"
             />
-            <MoviesRow movies={trendingMovies} title="Trending Movies" />
-            <MoviesRow movies={topRatedMovies} title="Top Rated Movies" />
-            <MoviesRow movies={actionMovies} title="Action Movies" />
-            <MoviesRow movies={comedyMovies} title="Comedy Movies" />
-            <MoviesRow movies={horrorMovies} title="Horror Movies" />
-            <MoviesRow movies={romanceMovies} title="Romance Movies" />
-            <MoviesRow movies={documentary} title="Documentary" />
+            <MoviesRow
+                movies={trendingMovies}
+                title="Trending Movies"
+                idSection="trending"
+            />
+            <MoviesRow
+                movies={topRatedMovies}
+                title="Top Rated Movies"
+                idSection="topRated"
+            />
+            <MoviesRow
+                movies={actionMovies}
+                title="Action Movies"
+                idSection="action"
+            />
+            <MoviesRow
+                movies={comedyMovies}
+                title="Comedy Movies"
+                idSection="comedy"
+            />
+            <MoviesRow
+                movies={horrorMovies}
+                title="Horror Movies"
+                idSection="horror"
+            />
+            <MoviesRow
+                movies={romanceMovies}
+                title="Romance Movies"
+                idSection="romance"
+            />
+            <MoviesRow
+                movies={documentary}
+                title="Documentary"
+                idSection="documentary"
+            />
+            <div
+                onClick={scrollToTopHandler}
+                style={{
+                    visibility: `${scrollY > 800 ? "visible" : "hidden"}`,
+                }}
+                className="text-white bg-black rounded-full border-none outline-none cursor-pointer fixed z-30 right-16 bottom-12 text-8xl transition-all hover:text-black hover:bg-white"
+            >
+                <FaArrowAltCircleUp />
+            </div>
         </div>
     );
 };

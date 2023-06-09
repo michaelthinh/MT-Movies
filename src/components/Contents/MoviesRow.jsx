@@ -11,7 +11,7 @@ import {
 import { useViewPort } from "../../hooks";
 
 const MoviesRow = (props) => {
-    const { movies, title, isOriginalMovies } = props;
+    const { movies, title, isOriginalMovies, idSection } = props;
     const sliderRef = useRef();
     const movieRef = useRef();
     const [dragDown, setDragDown] = useState(0);
@@ -66,7 +66,11 @@ const MoviesRow = (props) => {
         setDragMove(e.screenX);
     };
     return (
-        <div className={classes.moviesContainer} draggable="false">
+        <div
+            className={classes.moviesContainer}
+            draggable="false"
+            id={idSection}
+        >
             <h1 className={classes.moviesHeading}>{title}</h1>
             <div
                 className={classes.moviesSlider}
@@ -95,7 +99,6 @@ const MoviesRow = (props) => {
                     movies.length > 0 &&
                     movies.map((movie, index) => {
                         if (movie.poster_path && movie.backdrop_path !== null) {
-                            console.log(isOriginalMovies);
                             let imageURL = isOriginalMovies
                                 ? getPosterImage(movie.poster_path)
                                 : getBackdropImage(movie.backdrop_path);
