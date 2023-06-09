@@ -4,14 +4,16 @@ import { useEffect, useRef, useState } from "react";
 
 import classes from "./MoviesRow.module.scss";
 import { SmoothHorizontalScrolling } from "../../utils";
+import { useViewPort } from "../../hooks";
 
 const MoviesRow = (props) => {
-    const { movies, title } = props;
+    const { movies, title, isOriginalMovies } = props;
     const sliderRef = useRef();
     const movieRef = useRef();
     const [dragDown, setDragDown] = useState(0);
     const [dragMove, setDragMove] = useState(0);
     const [isDrag, setIsDrag] = useState(false);
+    const [windowWidth] = useViewPort();
     const scrollRightHandler = () => {
         const maxScrollLeft =
             sliderRef.current.scrollWidth - sliderRef.current.clientWidth;
@@ -64,14 +66,26 @@ const MoviesRow = (props) => {
             <h1 className={classes.moviesHeading}>{title}</h1>
             <div
                 className={classes.moviesSlider}
-                style={{
-                    gridTemplateColumns: `repeat(${movies.length},300px)`,
-                }}
                 ref={sliderRef}
                 draggable="true"
                 onDragStart={dragStartHandler}
                 onDragEnd={dragEndHandler}
                 onDragEnter={dragEnterHandler}
+                style={
+                    movies && movies.length > 0
+                        ? {
+                              gridTemplateColumns: `repeat(${movies.length}, ${
+                                  windowWidth > 1200
+                                      ? "360px"
+                                      : windowWidth > 992
+                                      ? "300px"
+                                      : windowWidth > 768
+                                      ? "250px"
+                                      : "200px"
+                              })`,
+                          }
+                        : {}
+                }
             >
                 {movies.map((movie, index) => (
                     <div
@@ -86,10 +100,20 @@ const MoviesRow = (props) => {
                 ))}
             </div>
             <div>
-                <div className={classes.btnLeft} onClick={scrollLeftHandler}>
+                <div
+                    className={`${classes.btnLeft} ${
+                        isOriginalMovies && classes.isOriginalMovies
+                    }`}
+                    onClick={scrollLeftHandler}
+                >
                     <FiChevronLeft />
                 </div>
-                <div className={classes.btnRight} onClick={scrollRightHandler}>
+                <div
+                    className={`${classes.btnRight} ${
+                        isOriginalMovies && classes.isOriginalMovies
+                    }`}
+                    onClick={scrollRightHandler}
+                >
                     <FiChevronRight />
                 </div>
             </div>

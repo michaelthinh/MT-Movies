@@ -20,7 +20,11 @@ const movies = [
 const Contents = () => {
     return (
         <div>
-            <MoviesRow movies={movies} title="Original Movies" />
+            <MoviesRow
+                movies={movies}
+                title="Original Movies"
+                isOriginalMovies={true}
+            />
             <MoviesRow movies={movies} title="Trending Movies" />
             <MoviesRow movies={movies} title="Top Rated Movies" />
             <MoviesRow movies={movies} title="Action Movies" />
